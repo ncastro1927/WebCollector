@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>WebCollector</title>
+    </h:head>
+    <h:body>
+        
+        <h:form id="form">
+
+            <p:growl id="messages" showDetail="true" />
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="Ver mi perfil" icon="pi pi-user" styleClass="ui-button-help">
+                    </p:commandButton>
+                </p:toolbarGroup>
+
+            </p:toolbar>
+            
+            <div class="card" style="display: flex; align-items: center; justify-content: center; background: #2A5A74; height: 50px;">
+                <h1 style="color: #FFFF;">Tiendas</h1>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fx)); gap: 10px;">
+                <ui:repeat value="#{tiendaController.listaTiendas}" var="tienda">
+                    <p:card style=" background-color: #ededed; height: auto; margin-top: 10px; text-align: center">
+                        <f:facet name="header" >
+                            <img style="margin-top: 20px; height: 100px; width: auto;" alt="imagen" src="https://cdn-icons-png.flaticon.com/512/2697/2697432.png"/>
+                        </f:facet>
+                        <f:facet name="title">
+                            #{tienda.nomTienda}
+                        </f:facet>
+                        <p:outputLabel value="#{tienda.descripcionTienda}" />
+                        <f:facet name="footer">
+                            <h:form>
+                                <p:commandButton value="Acceder" actionListener="#{tiendaController.ingresarProductosCliente()}"
+                                                 process="@this" style="width: 70%; background-color: #28A0BA;"/>
+                            </h:form>
+                        </f:facet>
+                    </p:card>
+                </ui:repeat>
+            </div>
+
+        </h:form>
+
+        <h:form id="dialogs">
+            <p:growl id="messagesDialogs" showDetail="false" />
+        </h:form>
+        
+
+    </h:body>
+</html>

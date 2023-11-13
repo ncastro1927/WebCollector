@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Pagina Principal</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:growl id="messages" showDetail="true" />
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="Ver mi perfil" icon="pi pi-user" styleClass="ui-button-help" ajax="false">
+                    </p:commandButton>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">    
+                    <p:commandButton value="Registrar admin" icon="pi pi-plus" 
+                                     update=":dialogs:manage-product-content"
+                                     oncomplete="PF('manageProductDialog').show()"
+                                     styleClass="ui-button-success" style="margin-right: .5rem"
+                                     actionListener="#{registroController.openNew}">   
+                    </p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
+            <h1>Bienvenido #{loginController.usuario}</h1>
+
+        </h:form>
+        <h:form id="dialogs">
+            <p:growl id="messagesDialogs" showDetail="false" />
+            <p:dialog header="Detalles del admin" showEffect="fade" modal="true" widgetVar="manageProductDialog"
+                      responsive="true">  
+
+                <p:outputPanel id="manage-product-content" class="ui-fluid">
+                   
+                        <div class="field">
+                            <p:outputLabel for="usuario">Usuario </p:outputLabel>
+                            <p:inputText id="usuario"  required="true" value="#{registroController.selectedUsuario.usuario}"/>
+                        </div>
+                    
+                        <div class="field">
+                            <p:outputLabel for="clave">Clave </p:outputLabel>
+                            <p:inputText id="clave"  required="true" value="#{registroController.selectedUsuario.clave}"/>
+                        </div>
+                        <div class="field">
+                              <p:outputLabel>Admin</p:outputLabel> 
+                        </div>
+                        <div class="field">
+                            <p:selectOneMenu id="console" value="#{registroController.selectedUsuario.tipo}" style="width:125px">
+                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                <f:selectItem itemLabel="General" itemValue="Admin General" />
+                                <f:selectItem itemLabel="Tienda 1" itemValue="Admin Tienda 1" />
+                                <f:selectItem itemLabel="Tienda 2" itemValue="Admin Tienda 2" />
+                                <f:facet name="footer">
+                                    <p:separator />
+                                    <h:outputText value="Tipo" style="font-weight:bold;"/>
+                                </f:facet>
+                            </p:selectOneMenu>
+                        </div>                    
+                 
+                </p:outputPanel>
+            
+            <f:facet name="footer">
+                <p:commandButton value="Registrar" icon="pi pi-check" actionListener="#{registroController.registrar()}"
+                    update="manage-product-content form" process="manage-product-content @this"/>
+                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                    class="ui-button-secondary" type="button" />
+            </f:facet>
+            </p:dialog>
+            
+        </h:form>
+
+
+
+
+    </h:body>
+</html>
+
+
+
+
+

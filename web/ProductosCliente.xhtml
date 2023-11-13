@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>WebCollector</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:growl id="msg" showDetail="true" />
+
+            <p:dataTable var="miProducto" value="#{productoController.listaRetorno1}"  rows="10"
+                         paginator="true" paginatorPosition="both"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+                <p:column headerText="Codigo">
+                    <h:outputText value="#{miProducto.codigo}" />
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{miProducto.nombreProducto}" />
+                </p:column>
+                <p:column headerText="Imagen">
+                    <h:outputText value="#{miProducto.imagen}" />
+                </p:column>
+                <p:column headerText="Precio">
+                    <h:outputText value="#{miProducto.precio}" />
+                </p:column>
+                <p:column headerText="Categoria">
+                    <h:outputText value="#{miProducto.categoriaProducto}" />
+                </p:column>
+                <p:column headerText="Acciones">
+                    <p:commandButton value="Comprar" icon="pi pi-plus" process="@this"
+                                     oncomplete="PF('comprarProductDialog').show()"
+                                     styleClass="ui-button-success" style="margin-right: .5rem" rendered="True">
+                        <f:setPropertyActionListener value="#{miProducto}" target="#{productoController.selectedProducto}"/>
+                    </p:commandButton>
+                </p:column>
+                <f:facet name="paginatorTopLeft">
+                </f:facet>
+                <f:facet name="paginatorBottomRight">
+                </f:facet>
+
+            </p:dataTable>
+        </h:form>
+
+        <h:form id="dialogs">
+            <p:growl id="messagesDialogs" showDetail="True" />
+            <p:confirmDialog widgetVar="comprarProductDialog" showEffect="fade" width="300"
+                             message="Desea comprar este producto?" header="Confirmar">
+                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{productoController.comprar()}"
+                                 process="@this" update="form messagesDialogs"
+                                 oncomplete="PF('comprarProductDialog').hide()" />
+                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                 onclick="PF('comprarProductDialog').hide()" />
+            </p:confirmDialog>
+        </h:form>
+    </h:body>
+</html>
+

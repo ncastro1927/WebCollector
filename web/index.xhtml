@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Login</title>
+        <h:outputStylesheet library="css" name="login.css"/>
+    </h:head>
+    
+    <h:body  id="centrar">
+            <h:form id="dialogs">
+            <p:growl id="messagesDialogs" showDetail="false" />
+            <p:dialog header="Detalles del cliente" showEffect="fade" modal="true" widgetVar="manageProductDialog"
+                      responsive="true">  
+
+                <p:outputPanel id="manage-product-content" class="ui-fluid">
+                   
+                        <div class="field">
+                            <p:outputLabel for="usuario">Usuario </p:outputLabel>
+                            <p:inputText id="usuario"  required="true" value="#{registroController.selectedUsuario.usuario}"/>
+                        </div>
+                    
+                        <div class="field">
+                            <p:outputLabel for="clave">Clave </p:outputLabel>
+                            <p:inputText id="clave"  required="true" value="#{registroController.selectedUsuario.clave}"/>
+                        </div>
+                        
+                 
+                </p:outputPanel>
+            
+            <f:facet name="footer">
+                <p:commandButton value="Registrar" icon="pi pi-check" actionListener="#{registroController.registrar()}"
+                    update="manage-product-content form" process="manage-product-content @this"/>
+                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                    class="ui-button-secondary" type="button" />
+            </f:facet>
+            </p:dialog>
+            
+        </h:form>
+        
+        
+        <h:form id="form">
+            <p:panelGrid columns="1" >
+            <h1 style="text-align: center">Ingrese</h1> 
+            <p:growl id="msg" showDetail="true"/>
+             
+            <p:inputText value="#{loginController.usuario}" placeholder="Correo Electronico"/>
+            <p:password value="#{loginController.clave}" placeholder="Clave"/>
+            
+            <p:commandButton value="Ingresar al sistema" actionListener="#{loginController.ingresar()}" update="msg"/>
+            <p:commandButton value="Registrarse" icon="pi pi-plus" 
+                                     update=":dialogs:manage-product-content"
+                                     oncomplete="PF('manageProductDialog').show()"
+                                     styleClass="ui-button-success" style="margin-right: .5rem"
+                                     actionListener="#{registroController.openNew}" />
+        </p:panelGrid>
+
+        </h:form>
+
+    </h:body>
+</html>
+
+
