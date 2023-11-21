@@ -11,7 +11,7 @@
     <h:body>
 
         <h:form id="form">
-            
+
             <p:toolbar>
                 <p:toolbarGroup>
                     <p:commandButton value="Ver mi perfil" icon="pi pi-user" styleClass="ui-button-help" ajax="false">
@@ -51,7 +51,7 @@
                         <p:outputLabel value="#{tienda.descripcionTienda}" />
                         <f:facet name="footer">
                             <h:form>
-                                <p:commandButton value="Acceder" actionListener="#{tiendaController.ingresarProductosAdmin()}"
+                                <p:commandButton value="Acceder" actionListener="#{tiendaController.ingresarProductosAdmin(tienda.idTienda)}"
                                                  process="@this" style="width: 70%; background-color: #28A0BA;"/>
                             </h:form>
                         </f:facet>

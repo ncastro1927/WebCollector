@@ -61,20 +61,24 @@ public class TiendaController implements Serializable{
         PrimeFaces.current().executeScript("PF('crearTiendaDialog').hide()");
     }
 
-    public void ingresarProductosAdmin() throws ClassNotFoundException{
-        this.redireccionar("/faces/ProductosAdmin.xhtml");            
+    public void ingresarProductosAdmin(int idTienda) throws ClassNotFoundException{
+        this.redireccionar("/faces/ProductosAdmin.xhtml?idTienda="+idTienda);            
     }
 
-    public void ingresarProductosCliente() throws ClassNotFoundException{
-        this.redireccionar("/faces/ProductosCliente.xhtml");            
+    public void ingresarProductosCliente(int idTienda) throws ClassNotFoundException{
+        this.redireccionar("/faces/ProductosCliente.xhtml?idTienda="+idTienda);            
     }
-    
+    public void ingresarPToString() throws ClassNotFoundException{
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Método de prueba ejecutado", null));
+        System.out.println("Ingrese a metodo de prueba");
+    }
     public void redireccionar(String ruta){
         HttpServletRequest request;
-        try{
+        try {
             request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + ruta);
-        }catch(Exception e){      
+        } catch (Exception e) {
+            e.printStackTrace(); // O utiliza algún sistema de logging
         }
     }
 

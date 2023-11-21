@@ -7,13 +7,12 @@ import java.io.Serializable;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author natal
  */
-
 public class ProductoTO implements Serializable {
+
     private int id;
     private String codigo;
     private String nombreProducto;
@@ -21,11 +20,13 @@ public class ProductoTO implements Serializable {
     private String imagen;
     private double precio;
     private String categoriaProducto;
+    private String cantidadDisponible;
+    private int idTienda;
 
     public ProductoTO() {
     }
 
-    public ProductoTO(int id, String codigo, String nombreProducto, String descripcionProducto, String imagen, double precio, String categoriaProducto) {
+    public ProductoTO(int id, String codigo, String nombreProducto, String descripcionProducto, String imagen, double precio, String categoriaProducto, String cantidadDisponible, int idTienda) {
         this.id = id;
         this.codigo = codigo;
         this.nombreProducto = nombreProducto;
@@ -33,14 +34,8 @@ public class ProductoTO implements Serializable {
         this.imagen = imagen;
         this.precio = precio;
         this.categoriaProducto = categoriaProducto;
-    }
-
-    public ProductoTO(String codigo, String nombreProducto, String descripcionProducto, double precio, String categoriaProducto) {
-        this.codigo = codigo;
-        this.nombreProducto = nombreProducto;
-        this.descripcionProducto = descripcionProducto;
-        this.precio = precio;
-        this.categoriaProducto = categoriaProducto;
+        this.cantidadDisponible = cantidadDisponible;
+        this.idTienda = idTienda;
     }
 
     public int getId() {
@@ -99,12 +94,25 @@ public class ProductoTO implements Serializable {
         this.categoriaProducto = categoriaProducto;
     }
 
-    @Override
-    public String toString() {
-        return "ProductoTO{" + "id=" + id + ", codigo=" + codigo + ", nombreProducto=" + nombreProducto + ", descripcionProducto=" + descripcionProducto + ", imagen=" + imagen + ", precio=" + precio + ", categoriaProducto=" + categoriaProducto + '}';
+    public String getCantidadDisponible() {
+        return cantidadDisponible;
     }
 
-    
-    
-    
+    public void setCantidadDisponible(String cantidadDisponible) {
+        this.cantidadDisponible = cantidadDisponible;
+    }
+
+    public int getIdTienda() {
+        return idTienda;
+    }
+
+    public void setIdTienda(int idTienda) {
+        this.idTienda = idTienda;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductoTO{" + "id=" + id + ", codigo=" + codigo + ", nombreProducto=" + nombreProducto + ", descripcionProducto=" + descripcionProducto + ", imagen=" + imagen + ", precio=" + precio + ", categoriaProducto=" + categoriaProducto + ", cantidadDisponible=" + cantidadDisponible + ", idTienda=" + idTienda + '}';
+    } 
+
 }

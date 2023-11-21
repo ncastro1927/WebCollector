@@ -30,6 +30,9 @@
                 <p:column headerText="Nombre">
                     <h:outputText value="#{miProducto.nombreProducto}" />
                 </p:column>
+                <p:column headerText="Descripción">
+                    <h:outputText value="#{miProducto.descripcionProducto}" />
+                </p:column>
                 <p:column headerText="Imagen">
                     <h:outputText value="#{miProducto.imagen}" />
                 </p:column>
@@ -39,6 +42,10 @@
                 <p:column headerText="Categoria">
                     <h:outputText value="#{miProducto.categoriaProducto}" />
                 </p:column>
+                <p:column headerText="Cantidad Disponible">
+                    <h:outputText value="#{miProducto.cantidadDisponible}" />
+                </p:column>
+                
 
 
                 <p:column headerText="Acciones">
@@ -97,8 +104,13 @@
                     </div>
                      <div class="field col">
                             <p:outputLabel for="precio">Precio</p:outputLabel>
-                            <p:inputNumber id="precio" value="#{productoController.selectedProducto.precio}" symbol=" ₡"
+                            <p:inputNumber id="precio" value="#{productoController.selectedProducto.precio}" symbol=" COL"
                                 symbolPosition="s" decimalSeparator="." thousandSeparator="," />
+                        </div>
+                
+                <div class="field col">
+                            <p:outputLabel for="cantidadDisponible">Cantidad disponible</p:outputLabel>
+                            <p:spinner id="cantidadDisponible" min="0" value="#{productoController.selectedProducto.cantidadDisponible}" />
                         </div>
                 </p:outputPanel>
                 

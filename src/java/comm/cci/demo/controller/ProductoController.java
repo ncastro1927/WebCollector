@@ -13,6 +13,8 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
 
@@ -22,15 +24,22 @@ import org.primefaces.PrimeFaces;
  * @author natal
  */
 @ManagedBean(name = "productoController")
-@SessionScoped
+@ViewScoped
 public class ProductoController implements Serializable {
 
     private List<ProductoTO> listaRetorno1 = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
-
+    private int idTienda;
+    
     public ProductoController() throws ClassNotFoundException {
-         ProductoServicio productoServicio = new ProductoServicio();
-        this.listaRetorno1 = productoServicio.demeProducto();
+        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        String idTiendaParam = externalContext.getRequestParameterMap().get("idTienda");
+        this.idTienda=Integer.parseInt(idTiendaParam);
+        
+        ProductoServicio productoServicio = new ProductoServicio();
+        this.listaRetorno1 = productoServicio.demeProducto(idTienda);
     }
 
     public void openNew() {
@@ -39,10 +48,12 @@ public class ProductoController implements Serializable {
 
     public void saveProducto() throws ClassNotFoundException {
         ProductoServicio productoServicio = new ProductoServicio();
+        
+        //Al guardar un producto se referencia en idTienda
+        this.selectedProducto.setIdTienda(idTienda);
         productoServicio.insertar(this.selectedProducto);
-        this.listaRetorno1 = productoServicio.demeProducto();
+        this.listaRetorno1 = productoServicio.demeProducto(idTienda);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Acción realizado correctamente"));
-
     }
 
     public void deleteProducto() throws ClassNotFoundException {
@@ -55,7 +66,7 @@ public class ProductoController implements Serializable {
     public void comprar() throws ClassNotFoundException{
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Comprado"));
     }
-    
+
     public List<ProductoTO> getListaRetorno1() {
         return listaRetorno1;
     }
@@ -71,6 +82,16 @@ public class ProductoController implements Serializable {
     public void setSelectedProducto(ProductoTO selectedProducto) {
         this.selectedProducto = selectedProducto;
     }
+
+    public int getIdTienda() {
+        return idTienda;
+    }
+
+    public void setIdTienda(int idTienda) {
+        this.idTienda = idTienda;
+    }
+    
+    
 
     
     

@@ -22,6 +22,9 @@
                 <p:column headerText="Nombre">
                     <h:outputText value="#{miProducto.nombreProducto}" />
                 </p:column>
+                <p:column headerText="Descripción">
+                    <h:outputText value="#{miProducto.descripcionProducto}" />
+                </p:column>
                 <p:column headerText="Imagen">
                     <h:outputText value="#{miProducto.imagen}" />
                 </p:column>
@@ -30,6 +33,9 @@
                 </p:column>
                 <p:column headerText="Categoria">
                     <h:outputText value="#{miProducto.categoriaProducto}" />
+                </p:column>
+                <p:column headerText="Catidad disponible">
+                    <h:outputText value="#{miProducto.cantidadDisponible}" />
                 </p:column>
                 <p:column headerText="Acciones">
                     <p:commandButton value="Comprar" icon="pi pi-plus" process="@this"
