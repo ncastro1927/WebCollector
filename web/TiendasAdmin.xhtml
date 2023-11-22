@@ -56,8 +56,36 @@
                             </h:form>
                         </f:facet>
                     </p:card>
+                    <p:column headerText="Acciones">
+             <p:commandButton icon="pi pi-pencil" update=":dialogs:crear-tienda-content"
+                                     oncomplete="PF('crearTiendaDialog').show()"
+                                     style="background-color: darkseagreen; color: white;"
+                                     styleClass="edit-button rounded-button ui-button-success" process="@this">
+                 <f:setPropertyActionListener value="#{tienda}" target="#{tiendaController.selectedTienda}" />
+                        <p:resetInput target=":dialogs:crear-tienda-content" />
+                    </p:commandButton>
+                           <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                     process="@this"
+                                     style="background-color: red; color: white;"
+                                     oncomplete="PF('deleteTiendaDialog').show()">
+                               <f:setPropertyActionListener value="#{tienda}" target="#{tiendaController.selectedTienda}" />
+                    </p:commandButton>
+                    
+        </p:column>
                 </ui:repeat>
+
             </div>
+             <p:confirmDialog widgetVar="deleteTiendaDialog" showEffect="fade" width="300"
+                             message="Desea eliminar esta tienda?" header="Confirmar" severity="warn">
+            <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{tiendaController.deleteTienda()}"
+                                 process="@this" update="form dialogs:crear-tienda-content"
+                                 oncomplete="PF('deleteTiendaDialog').hide()" />
+                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                 onclick="PF('deleteTiendaDialog').hide()" />
+            </p:confirmDialog>
+
+      
+         
         </h:form>
 
         <h:form id="dialogs">

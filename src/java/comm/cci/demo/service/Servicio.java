@@ -16,9 +16,9 @@ import java.sql.SQLException;
 public class Servicio {
     
     private Connection conectar = null;
-    private static String url = "jdbc:mysql://localhost:3306/bd_webcollector?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull"; //Conecto la BD (Conexion CASA)
+    private static String url = "jdbc:mysql://localhost:3306/webcollector?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull"; //Conecto la BD (Conexion CASA)
     private String usuario = "root"; //Le doy el usuario de acceso
-    private String password = "123456";//Le doy la contraseña de acceso
+    private String password = "root";//Le doy la contraseña de acceso
     private String nombre;
 
     public Servicio() {

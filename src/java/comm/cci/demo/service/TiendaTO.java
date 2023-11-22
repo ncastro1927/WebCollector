@@ -11,7 +11,7 @@ package comm.cci.demo.service;
  */
 public class TiendaTO {
     
-    private String idTienda;
+    private int idTienda;
     private String nomTienda;
     private String descripcionTienda;
     private String categoriaTienda;
@@ -20,7 +20,7 @@ public class TiendaTO {
     public TiendaTO() {
     }
 
-    public TiendaTO(String idTienda, String nomTienda, String descripcionTienda, String categoriaTienda, String fk_idUser) {
+    public TiendaTO(int idTienda, String nomTienda, String descripcionTienda, String categoriaTienda, String fk_idUser) {
         this.idTienda = idTienda;
         this.nomTienda = nomTienda;
         this.descripcionTienda = descripcionTienda;
@@ -41,11 +41,11 @@ public class TiendaTO {
         this.categoriaTienda = categoriaTienda;
     }
 
-    public String getIdTienda() {
+    public int getIdTienda() {
         return idTienda;
     }
 
-    public void setIdTienda(String idTienda) {
+    public void setIdTienda(int idTienda) {
         this.idTienda = idTienda;
     }
 
@@ -79,6 +79,11 @@ public class TiendaTO {
 
     public void setFk_idUser(String fk_idUser) {
         this.fk_idUser = fk_idUser;
+    }
+
+    @Override
+    public String toString() {
+        return "TiendaTO{" + "idTienda=" + idTienda + ", nomTienda=" + nomTienda + ", descripcionTienda=" + descripcionTienda + ", categoriaTienda=" + categoriaTienda + ", fk_idUser=" + fk_idUser + '}';
     }
     
     

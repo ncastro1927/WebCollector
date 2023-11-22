@@ -26,7 +26,7 @@ public class ServicioTienda extends Servicio{
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) { //Este while lo que hace es eterse columna por colunma de la BD para ver que info tiene adentro
-                String idTienda = rs.getString("idTienda");
+                int idTienda = rs.getInt("idTienda");
                 String nomTienda = rs.getString("nomTienda");
                 String categoriaTienda = rs.getString("categoria");
                 String descripcionTienda = rs.getString("descripcion");     
@@ -48,23 +48,68 @@ public class ServicioTienda extends Servicio{
         return listaTiendas;
     }
     
-    public void insertarTienda(TiendaTO tiendaTO) throws ClassNotFoundException {
+   public void insertarTienda(TiendaTO tiendaTO) throws ClassNotFoundException {
 
         try {
- 
-            PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO tienda(nomTienda,categoria,descripcion) VALUES (?,?,?)");
-            stmt.setString(1, tiendaTO.getNomTienda());
-            stmt.setString(2, tiendaTO.getCategoriaTienda());
-            stmt.setString(3, tiendaTO.getDescripcionTienda());
-            
-            
-            stmt.execute();
-            //Cierro todas las conexiones con la BD para que este no se sobrecargue y se cierre
-            stmt.close();
+
+            if (!existente(tiendaTO.getIdTienda())) {
+
+                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO tienda( nomTienda,categoria,descripcion) VALUES (?,?,?)");
+
+                stmt.setString(1, tiendaTO.getNomTienda());
+                stmt.setString(2, tiendaTO.getCategoriaTienda());
+                stmt.setString(3, tiendaTO.getDescripcionTienda());
+
+                stmt.execute();
+                //Cierro todas las conexiones con la BD para que este no se sobrecargue y se cierre
+                stmt.close();
+
+            } else {
+                PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE tienda SET nomTienda=?, categoria=? , descripcion=?where idTienda=?");
+                stmt.setString(1, tiendaTO.getNomTienda());
+                stmt.setString(2, tiendaTO.getCategoriaTienda());
+                stmt.setString(3, tiendaTO.getDescripcionTienda());
+                stmt.setInt(4, tiendaTO.getIdTienda());
+ stmt.execute();
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("Error al insertar datos: " + ex.getMessage());
         }
     }
+
+    private boolean existente(int idTienda) throws ClassNotFoundException {
+         try{
+           
+           PreparedStatement stmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM tienda WHERE idTienda = ?");
+           stmt.setInt(1, idTienda);
+           ResultSet resultado = stmt.executeQuery();
+           if(resultado.next()){
+               int count = resultado.getInt(1);
+               return count >0;
+           }
+
+       }catch (SQLException ex){
+           System.out.println("Error al actualizar"+ ex.getMessage());
+       }
+
+       return false;
+   } 
+    
+     public void eliminar(TiendaTO tiendaTO) throws ClassNotFoundException{
+        try {
+          
+            PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM tienda WHERE idTienda = ?");
+
+            stmt.setInt(1, tiendaTO.getIdTienda());
+
+            stmt.execute();
+            stmt.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     
 }

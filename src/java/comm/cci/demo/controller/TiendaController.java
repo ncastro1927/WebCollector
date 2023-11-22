@@ -81,7 +81,13 @@ public class TiendaController implements Serializable{
             e.printStackTrace(); // O utiliza algún sistema de logging
         }
     }
-
+public void deleteTienda() throws ClassNotFoundException{
+            ServicioTienda servicioTienda = new ServicioTienda();
+            servicioTienda.eliminar(this.selectedTienda);
+            listaTiendas.remove(selectedTienda);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Tienda Eliminado"));
+            
+        }
     public String getNomTienda() {
         return nomTienda;
     }
