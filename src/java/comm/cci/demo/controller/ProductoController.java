@@ -28,6 +28,7 @@ import org.primefaces.PrimeFaces;
 public class ProductoController implements Serializable {
 
     private List<ProductoTO> listaRetorno1 = new ArrayList<ProductoTO>();
+        private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
     private int idTienda;
     
@@ -63,8 +64,21 @@ public class ProductoController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Eliminado"));
     }
 
-    public void comprar() throws ClassNotFoundException{
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Comprado"));
+    public void deleteProductoCarrito() throws ClassNotFoundException {
+        for(ProductoTO producto :listaCarrito) {
+            if(producto.equals(selectedProducto)){    
+                
+                 listaCarrito.remove(producto);
+
+            }
+        }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Eliminado del Carrito"));
+    }
+    
+    
+    public void agregarCarrito() throws ClassNotFoundException {
+        listaCarrito.add(selectedProducto);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto agregado al Carrito"));
     }
 
     public List<ProductoTO> getListaRetorno1() {
@@ -91,6 +105,14 @@ public class ProductoController implements Serializable {
         this.idTienda = idTienda;
     }
     
+    
+    public List<ProductoTO> getListaCarrito() {
+        return listaCarrito;
+    }
+
+    public void setListaCarrito(List<ProductoTO> listaCarrito) {
+        this.listaCarrito = listaCarrito;
+    }
     
 
     
