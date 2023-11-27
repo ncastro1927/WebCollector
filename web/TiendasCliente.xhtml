@@ -8,23 +8,20 @@
     <h:head>
         <title>WebCollector</title>
     </h:head>
+    
     <h:body>
         
         <h:form id="form">
-
             <p:growl id="messages" showDetail="true" />
             <p:toolbar>
                 <p:toolbarGroup>
                     <p:commandButton value="Ver mi perfil" icon="pi pi-user" styleClass="ui-button-help">
                     </p:commandButton>
                 </p:toolbarGroup>
-
             </p:toolbar>
-            
             <div class="card" style="display: flex; align-items: center; justify-content: center; background: #2A5A74; height: 50px;">
                 <h1 style="color: #FFFF;">Tiendas</h1>
             </div>
-
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fx)); gap: 10px;">
                 <ui:repeat value="#{tiendaController.listaTiendas}" var="tienda">
                     <p:card style=" background-color: #ededed; height: auto; margin-top: 10px; text-align: center">
@@ -34,23 +31,23 @@
                         <f:facet name="title">
                             #{tienda.nomTienda}
                         </f:facet>
-                        <p:outputLabel value="#{tienda.descripcionTienda}" />
-                        <f:facet name="footer">
-                            <h:form>
+                        <p:outputLabel value="#{tienda.descripcionTienda}" style="margin-top: 20px; height: 100px; width: auto;"/>
+                        <div>
+                        <i class="pi pi-tag product-category-icon" style="margin-top: 20px; width: auto;"/>
+                        <span class="product-category">#{tienda.categoriaTienda} </span>
+                        </div>
+                        <f:facet name="footer">                           
                                 <p:commandButton value="Acceder" actionListener="#{tiendaController.ingresarProductosCliente(tienda.idTienda)}"
-                                                 process="@this" style="width: 70%; background-color: #28A0BA;"/>
-                            </h:form>
+                                                 process="@this" style="width: 70%; background-color: #28A0BA;"/>                           
                         </f:facet>
                     </p:card>
                 </ui:repeat>
             </div>
-
         </h:form>
 
         <h:form id="dialogs">
             <p:growl id="messagesDialogs" showDetail="false" />
         </h:form>
-        
 
     </h:body>
 </html>

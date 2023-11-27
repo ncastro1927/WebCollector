@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    
+
     <h:head>
         <title>WebCollector</title>
     </h:head>
@@ -45,8 +45,6 @@
                 <p:column headerText="Cantidad Disponible">
                     <h:outputText value="#{miProducto.cantidadDisponible}" />
                 </p:column>
-                
-
 
                 <p:column headerText="Acciones">
                     <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-product-content"
@@ -62,10 +60,10 @@
                                      oncomplete="PF('deleteProductDialog').show()">
                         <f:setPropertyActionListener value="#{miProducto}" target="#{productoController.selectedProducto}" />
                     </p:commandButton>
-                    
+
                 </p:column>
-                
-                
+
+
                 <f:facet name="paginatorTopLeft">
                 </f:facet>
 
@@ -95,25 +93,24 @@
                     <div class="field">
                         <p:outputLabel for="categoria">Categoria</p:outputLabel>
                         <p:selectOneRadio id="categoria" value="#{productoController.selectedProducto.categoriaProducto}"
-                            layout="responsive" columns="2">
+                                          layout="responsive" columns="2">
                             <f:selectItem itemLabel="Damas" itemValue="Damas" />
                             <f:selectItem itemLabel="Caballeros" itemValue="Caballeros" />
                             <f:selectItem itemLabel="Niños" itemValue="Niños" />
                             <f:selectItem itemLabel="Bebes" itemValue="Bebes" />
                         </p:selectOneRadio>
                     </div>
-                     <div class="field col">
-                            <p:outputLabel for="precio">Precio</p:outputLabel>
-                            <p:inputNumber id="precio" value="#{productoController.selectedProducto.precio}" symbol=" COL"
-                                symbolPosition="s" decimalSeparator="." thousandSeparator="," />
-                        </div>
-                
-                <div class="field col">
-                            <p:outputLabel for="cantidadDisponible">Cantidad disponible</p:outputLabel>
-                            <p:spinner id="cantidadDisponible" min="0" value="#{productoController.selectedProducto.cantidadDisponible}" />
-                        </div>
+                    <div class="field col">
+                        <p:outputLabel for="precio">Precio</p:outputLabel>
+                        <p:inputNumber id="precio" value="#{productoController.selectedProducto.precio}" symbol=" COL"
+                                       symbolPosition="s" decimalSeparator="." thousandSeparator="," />
+                    </div>
+                    <div class="field col">
+                        <p:outputLabel for="cantidadDisponible">Cantidad disponible</p:outputLabel>
+                        <p:spinner id="cantidadDisponible" min="0" value="#{productoController.selectedProducto.cantidadDisponible}" />
+                    </div>
                 </p:outputPanel>
-                
+
                 <f:facet name="footer">
                     <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{productoController.saveProducto()}"
                                      update="form manage-product-content messagesDialogs " process="manage-product-content @this" />
@@ -133,7 +130,7 @@
 
 
         </h:form>
-                
+
     </h:body>
 </html>
 

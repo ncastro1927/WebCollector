@@ -29,7 +29,7 @@ public class ProductoServicio extends Servicio {
 
             PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idproducto, codigo, nombre, descripcion, imagen, precio, categoria, cantidadDisponible  FROM producto WHERE idTienda = ?");
             stmt.setInt(1, idTienda);
-            
+
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -40,19 +40,9 @@ public class ProductoServicio extends Servicio {
                 String imagen = rs.getString("imagen");
                 Double precio = rs.getDouble("precio");
                 String categoria = rs.getString("categoria");
-                String cantidadDisponible = rs.getString("cantidadDisponible");
-                ProductoTO productoTO = new ProductoTO(idTienda, codigo, nombre, descripcion, imagen, precio, categoria, cantidadDisponible, idTienda);
-                productoTO.setId(idproducto);
-                productoTO.setCodigo(codigo);
-                productoTO.setNombreProducto(nombre);
-                productoTO.setDescripcionProducto(descripcion);
-                productoTO.setImagen(imagen);
-                productoTO.setPrecio(precio);
-                productoTO.setCategoriaProducto(categoria);
-                productoTO.setCantidadDisponible(cantidadDisponible);
-                productoTO.setIdTienda(idTienda);
+                int cantidadDisponible = rs.getInt("cantidadDisponible");
+                ProductoTO productoTO = new ProductoTO(idproducto, codigo, nombre, descripcion, imagen, precio, categoria, cantidadDisponible, idTienda);
                 listaRetorno1.add(productoTO);
-
             }
 
             rs.close();
@@ -78,9 +68,9 @@ public class ProductoServicio extends Servicio {
                 stmt.setString(5, productoTO.getImagen());
                 stmt.setDouble(6, productoTO.getPrecio());
                 stmt.setString(7, productoTO.getCategoriaProducto());
-                stmt.setString(8, productoTO.getCantidadDisponible());
+                stmt.setInt(8, productoTO.getCantidadDisponible());
                 stmt.setInt(9, productoTO.getIdTienda());
-                
+
                 stmt.execute();
                 stmt.close();
 
@@ -93,14 +83,14 @@ public class ProductoServicio extends Servicio {
                 stmt.setString(4, productoTO.getImagen());
                 stmt.setDouble(5, productoTO.getPrecio());
                 stmt.setString(6, productoTO.getCategoriaProducto());
-                stmt.setString(7, productoTO.getCantidadDisponible());
+                stmt.setInt(7, productoTO.getCantidadDisponible());
                 stmt.setInt(8, productoTO.getId());
 
                 stmt.execute();
             }
 
         } catch (Exception ex) {
-            System.out.println("Error al abrir ConexiÃ³n: " + ex.getMessage());
+            System.out.println("Error al abrir Conexion: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -138,4 +128,18 @@ public class ProductoServicio extends Servicio {
 
         return false;
     }
+
+    public void actualizarCantidadProducto(ProductoTO productoTO) throws ClassNotFoundException {
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE producto SET cantidadDisponible=?  where idproducto=?");
+            stmt.setInt(1, productoTO.getCantidadDisponible());
+            stmt.setInt(2, productoTO.getId());
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al actualizar la cantidad del producto: " + ex.getMessage());
+        }
+
+    }
+
 }

@@ -20,13 +20,18 @@ public class ProductoTO implements Serializable {
     private String imagen;
     private double precio;
     private String categoriaProducto;
-    private String cantidadDisponible;
+    private int cantidadDisponible;
     private int idTienda;
+    private int cantidadEnCarrito;
+
+    public double getSubtotal() {
+        return getPrecio() * getCantidadEnCarrito();
+    }
 
     public ProductoTO() {
     }
 
-    public ProductoTO(int id, String codigo, String nombreProducto, String descripcionProducto, String imagen, double precio, String categoriaProducto, String cantidadDisponible, int idTienda) {
+    public ProductoTO(int id, String codigo, String nombreProducto, String descripcionProducto, String imagen, double precio, String categoriaProducto, int cantidadDisponible, int idTienda) {
         this.id = id;
         this.codigo = codigo;
         this.nombreProducto = nombreProducto;
@@ -94,11 +99,11 @@ public class ProductoTO implements Serializable {
         this.categoriaProducto = categoriaProducto;
     }
 
-    public String getCantidadDisponible() {
+    public int getCantidadDisponible() {
         return cantidadDisponible;
     }
 
-    public void setCantidadDisponible(String cantidadDisponible) {
+    public void setCantidadDisponible(int cantidadDisponible) {
         this.cantidadDisponible = cantidadDisponible;
     }
 
@@ -110,9 +115,17 @@ public class ProductoTO implements Serializable {
         this.idTienda = idTienda;
     }
 
+    public int getCantidadEnCarrito() {
+        return cantidadEnCarrito;
+    }
+
+    public void setCantidadEnCarrito(int cantidadEnCarrito) {
+        this.cantidadEnCarrito = cantidadEnCarrito;
+    }
+
     @Override
     public String toString() {
         return "ProductoTO{" + "id=" + id + ", codigo=" + codigo + ", nombreProducto=" + nombreProducto + ", descripcionProducto=" + descripcionProducto + ", imagen=" + imagen + ", precio=" + precio + ", categoriaProducto=" + categoriaProducto + ", cantidadDisponible=" + cantidadDisponible + ", idTienda=" + idTienda + '}';
-    } 
+    }
 
 }

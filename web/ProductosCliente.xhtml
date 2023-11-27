@@ -7,18 +7,20 @@
     <h:head>
         <title>WebCollector</title>
     </h:head>
+
     <h:body>
+
         <h:form id="form">
             <p:growl id="msg" showDetail="true" />
             <p:toolbar>
-            <p:toolbarGroup align="left">    
+                <p:toolbarGroup align="left">    
                     <p:commandButton value="Ver carrito" icon="pi pi-shopping-cart" 
                                      update="dialogs"
                                      oncomplete="PF('manageProductDialog2').show()"
                                      styleClass="ui-button-success" style="margin-right: .5rem"
                                      actionListener="#{registroController.openNew}">   
                     </p:commandButton>
-            </p:toolbarGroup>
+                </p:toolbarGroup>
             </p:toolbar>
 
             <p:dataTable var="miProducto" value="#{productoController.listaRetorno1}"  rows="10"
@@ -49,9 +51,8 @@
                 </p:column>
                 <p:column headerText="Acciones">
                     <p:commandButton icon="pi pi-shopping-cart" update="dialogs:manage-product-content2"
-                                     oncomplete="PF('cartProductDialog').show()"
-                                     style="background-color: darkseagreen; color: white;"
-                                     process="@this">
+                                     oncomplete="PF('addProductDialog').show()"
+                                     style="background-color: darkseagreen; color: white;" process="@this">
                         <f:setPropertyActionListener value="#{miProducto}" target="#{productoController.selectedProducto}" />
                         <p:resetInput target="dialogs" />
                     </p:commandButton>
@@ -60,21 +61,47 @@
                 </f:facet>
                 <f:facet name="paginatorBottomRight">
                 </f:facet>
-
-            </p:dataTable>
+            </p:dataTable>            
         </h:form>
 
         <h:form id="dialogs">
             <p:growl id="messagesDialogs" showDetail="True" />
-             <p:confirmDialog widgetVar="cartProductDialog" showEffect="fade" width="300"
-                             message="Desea agregar este producto al carrito?" header="Confirmar" severity="warn">
-                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{productoController.agregarCarrito()}"
-                                 process="@this" update="form manage-product-content2 messagesDialogs2"
-                                 oncomplete="PF('cartProductDialog').hide()" />
-                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                                 onclick="PF('cartProductDialog').hide()" />
-            </p:confirmDialog>
-            
+            <p:growl id="messagesDialogs2" showDetail="True" />
+            <p:dialog header="Carrito de compras" showEffect="fade" modal="true" widgetVar="manageProductDialog2"
+                      responsive="true">
+                <p:outputPanel id="manage-product-content2" class="ui-fluid">
+                    <h:outputText value="Cantidad Total: #{productoController.calcularCantidadTotalCarrito()}" />
+                    <br />
+                    <h:outputText value="Subtotal: #{productoController.calcularSubtotalCarrito()}" />
+                    <p:dataTable var="miProducto" value="#{productoController.listaCarrito}" >
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{miProducto.nombreProducto}" />
+                        </p:column>
+                        <p:column headerText="Precio">
+                            <h:outputText value="#{miProducto.precio}" />
+                        </p:column>
+                        <p:column headerText="Cantidad en Carrito">
+                            <h:outputText value="#{miProducto.cantidadEnCarrito}" />
+                        </p:column>
+                        <p:column headerText="Acciones">
+                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                             update="dialogs:manage-product-content2"
+                                             process="@this"
+                                             style="background-color: red; color: white;"
+                                             oncomplete="PF('deleteProductDialog').show()">
+                                <f:setPropertyActionListener value="#{miProducto}" target="#{productoController.selectedProducto}" />
+                            </p:commandButton>
+                        </p:column>         
+                    </p:dataTable>
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Comprar" icon="pi pi-check" actionListener="#{productoController.saveProducto()}"
+                                     update="form manage-product-content2 messagesDialogs2" process="manage-product-content2 @this" />
+                    <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageProductDialog2').hide()"
+                                     class="ui-button-secondary" type="button" />
+                </f:facet>
+            </p:dialog>
             <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
                              message="Desea eliminar este producto del carrito?" header="Confirmar" severity="warn">
                 <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{productoController.deleteProductoCarrito()}"
@@ -83,46 +110,33 @@
                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                  onclick="PF('deleteProductDialog').hide()" />
             </p:confirmDialog>
-            
-            <p:growl id="messagesDialogs2" showDetail="True" />
-            <p:dialog header="Carrito de compras" showEffect="fade" modal="true" widgetVar="manageProductDialog2"
+
+            <p:dialog header="Agregar al Carrito" showEffect="fade" modal="true" widgetVar="addProductDialog"
                       responsive="true">
-                <p:outputPanel id="manage-product-content2" class="ui-fluid">
-                <p:dataTable var="miProducto" value="#{productoController.listaCarrito}" >
-
-                <p:column headerText="Nombre">
-                    <h:outputText value="#{miProducto.nombreProducto}" />
-                </p:column>
-
-                <p:column headerText="Precio">
-                    <h:outputText value="#{miProducto.precio}" />
-                </p:column>
-
-
-
-                <p:column headerText="Acciones">
-                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
-                                     update="dialogs:manage-product-content2"
-                                     process="@this"
-                                     style="background-color: red; color: white;"
-                                     oncomplete="PF('deleteProductDialog').show()">
-                        <f:setPropertyActionListener value="#{miProducto}" target="#{productoController.selectedProducto}" />
-                    </p:commandButton>
-                    
-                </p:column>
-                
-
-            </p:dataTable>
-            </p:outputPanel>
-                
+                <p:outputPanel id="add-product-content" class="ui-fluid">
+                    <div>
+                        <h:outputText value="Producto: #{productoController.selectedProducto.nombreProducto}" />
+                    </div>
+                    <div>
+                        <h:outputText value="Precio: #{productoController.selectedProducto.precio}" />
+                    </div>
+                    <div>
+                        <p:outputLabel for="cantidadAgregar">Cantidad a agregar:</p:outputLabel>
+                        <p:spinner id="cantidadAgregar" min="1" value="#{productoController.cantidadAgregar}" />
+                    </div>
+                </p:outputPanel>
                 <f:facet name="footer">
-                    <p:commandButton value="Comprar" icon="pi pi-check" actionListener="#{productoController.saveProducto()}"
-                                     update="form manage-product-content2 messagesDialogs2" process="manage-product-content2 @this" />
-                    <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageProductDialog2').hide()"
-                                     class="ui-button-secondary" type="button" />
+                    <p:commandButton value="Agregar al Carrito" icon="pi pi-check"
+                                     actionListener="#{productoController.agregarCarrito()}"
+                                     update="form dialogs:manage-product-content2 messagesDialogs2"
+                                     process="add-product-content @this"
+                                     oncomplete="PF('addProductDialog').hide()" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times"
+                                     onclick="PF('addProductDialog').hide()" class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
         </h:form>
+
     </h:body>
 </html>
 
