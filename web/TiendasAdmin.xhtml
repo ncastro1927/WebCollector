@@ -43,10 +43,10 @@
                         <f:facet name="title">
                             #{tienda.nomTienda}
                         </f:facet>
-                        <p:outputLabel value="#{tienda.descripcionTienda}" style="margin-top: 20px; height: 100px; width: auto;"/>
+                        <p:outputLabel value="Descripción: #{tienda.descripcionTienda}"/>                        
                         <div>
-                        <i class="pi pi-tag product-category-icon" style="margin-top: 20px; width: auto;"/>
-                        <span class="product-category">#{tienda.categoriaTienda} </span>
+                            <i class="pi pi-tag product-category-icon" style="margin-top: 20px; width: auto;"/>
+                            <span class="product-category">#{tienda.categoriaTienda} </span>
                         </div>
                         <f:facet name="footer">
                             <p:commandButton value="Acceder" actionListener="#{tiendaController.ingresarProductosAdmin(tienda.idTienda)}"
@@ -96,7 +96,7 @@
                     <div class="field">
                         <p:outputLabel for="descripcion">Descripcion</p:outputLabel>
                         <p:inputText id="descripcion" value="#{tiendaController.selectedTienda.descripcionTienda}" required="true" requiredMessage="Debe insertar la Descripcion de la Tienda"/>
-                    </div>
+                    </div>
                 </p:outputPanel>
                 <f:facet name="footer">
                     <p:commandButton value="Agregar" icon="pi pi-check" actionListener="#{tiendaController.saveTienda()}"

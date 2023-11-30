@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -57,14 +58,18 @@ public class ProductoController implements Serializable {
         this.selectedProducto = new ProductoTO();
     }
 
-    public void saveProducto() throws ClassNotFoundException {
-        ProductoServicio productoServicio = new ProductoServicio();
-
-        //Al guardar un producto se referencia en idTienda
-        this.selectedProducto.setIdTienda(idTienda);
-        productoServicio.insertar(this.selectedProducto);
-        this.listaRetorno1 = productoServicio.demeProducto(idTienda);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Acción realizado correctamente"));
+    public void saveProducto() {
+        try {
+            ProductoServicio productoServicio = new ProductoServicio();
+            //Al guardar un producto se referencia en idTienda
+            this.selectedProducto.setIdTienda(idTienda);
+            productoServicio.insertar(this.selectedProducto);
+            this.listaRetorno1 = productoServicio.demeProducto(idTienda);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Acción realizado correctamente"));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace(); // Manejo de la excepción
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error al guardar el producto."));
+        }
     }
 
     public void deleteProducto() throws ClassNotFoundException {

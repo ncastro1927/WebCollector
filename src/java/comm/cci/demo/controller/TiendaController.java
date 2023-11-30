@@ -27,7 +27,7 @@ import org.primefaces.PrimeFaces;
  */
 @ManagedBean(name = "tiendaController")
 @SessionScoped
-public class TiendaController implements Serializable{
+public class TiendaController implements Serializable {
 
     //Atributos de las tiendas
     private String nomTienda;
@@ -61,18 +61,20 @@ public class TiendaController implements Serializable{
         PrimeFaces.current().executeScript("PF('crearTiendaDialog').hide()");
     }
 
-    public void ingresarProductosAdmin(int idTienda) throws ClassNotFoundException{
-        this.redireccionar("/faces/ProductosAdmin.xhtml?idTienda="+idTienda);            
+    public void ingresarProductosAdmin(int idTienda) throws ClassNotFoundException {
+        this.redireccionar("/faces/ProductosAdmin.xhtml?idTienda=" + idTienda);
     }
 
-    public void ingresarProductosCliente(int idTienda) throws ClassNotFoundException{
-        this.redireccionar("/faces/ProductosCliente.xhtml?idTienda="+idTienda);            
+    public void ingresarProductosCliente(int idTienda) throws ClassNotFoundException {
+        this.redireccionar("/faces/ProductosCliente.xhtml?idTienda=" + idTienda);
     }
-    public void ingresarPToString() throws ClassNotFoundException{
+
+    public void ingresarPToString() throws ClassNotFoundException {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Método de prueba ejecutado", null));
         System.out.println("Ingrese a metodo de prueba");
     }
-    public void redireccionar(String ruta){
+
+    public void redireccionar(String ruta) {
         HttpServletRequest request;
         try {
             request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -81,13 +83,15 @@ public class TiendaController implements Serializable{
             e.printStackTrace(); // O utiliza algún sistema de logging
         }
     }
-public void deleteTienda() throws ClassNotFoundException{
-            ServicioTienda servicioTienda = new ServicioTienda();
-            servicioTienda.eliminar(this.selectedTienda);
-            listaTiendas.remove(selectedTienda);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Tienda Eliminado"));
-            
-        }
+
+    public void deleteTienda() throws ClassNotFoundException {
+        ServicioTienda servicioTienda = new ServicioTienda();
+        servicioTienda.eliminar(this.selectedTienda);
+        listaTiendas.remove(selectedTienda);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Tienda Eliminado"));
+
+    }
+
     public String getNomTienda() {
         return nomTienda;
     }

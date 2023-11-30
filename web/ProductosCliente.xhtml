@@ -11,14 +11,13 @@
     <h:body>
 
         <h:form id="form">
-            <p:growl id="msg" showDetail="true" />
-            <p:toolbar>
+            <p:toolbar id="toolbar">
                 <p:toolbarGroup align="left">    
-                    <p:commandButton value="Ver carrito" icon="pi pi-shopping-cart" 
-                                     update="dialogs"
+                    <p:commandButton value="Ver carrito" icon="pi pi-shopping-cart"
+                                     update=":form:dialogs"
                                      oncomplete="PF('manageProductDialog2').show()"
                                      styleClass="ui-button-success" style="margin-right: .5rem"
-                                     actionListener="#{registroController.openNew}">   
+                                     actionListener="#{registroController.openNew}">
                     </p:commandButton>
                 </p:toolbarGroup>
             </p:toolbar>
@@ -38,7 +37,7 @@
                     <h:outputText value="#{miProducto.descripcionProducto}" />
                 </p:column>
                 <p:column headerText="Imagen">
-                    <h:outputText value="#{miProducto.imagen}" />
+                    <p:graphicImage value="#{miProducto.imagen}" alt="Imagen" />
                 </p:column>
                 <p:column headerText="Precio">
                     <h:outputText value="#{miProducto.precio}" />
@@ -50,11 +49,11 @@
                     <h:outputText value="#{miProducto.cantidadDisponible}" />
                 </p:column>
                 <p:column headerText="Acciones">
-                    <p:commandButton icon="pi pi-shopping-cart" update="dialogs:manage-product-content2"
+                    <p:commandButton icon="pi pi-shopping-cart" update=":form:dialogs:manage-product-content2"
                                      oncomplete="PF('addProductDialog').show()"
                                      style="background-color: darkseagreen; color: white;" process="@this">
                         <f:setPropertyActionListener value="#{miProducto}" target="#{productoController.selectedProducto}" />
-                        <p:resetInput target="dialogs" />
+                        <p:resetInput target=":form:dialogs" />
                     </p:commandButton>
                 </p:column>
                 <f:facet name="paginatorTopLeft">
@@ -67,8 +66,7 @@
         <h:form id="dialogs">
             <p:growl id="messagesDialogs" showDetail="True" />
             <p:growl id="messagesDialogs2" showDetail="True" />
-            <p:dialog header="Carrito de compras" showEffect="fade" modal="true" widgetVar="manageProductDialog2"
-                      responsive="true">
+            <p:dialog header="Carrito de compras" showEffect="fade" modal="true" widgetVar="manageProductDialog2" responsive="true">
                 <p:outputPanel id="manage-product-content2" class="ui-fluid">
                     <h:outputText value="Cantidad Total: #{productoController.calcularCantidadTotalCarrito()}" />
                     <br />
@@ -85,7 +83,7 @@
                         </p:column>
                         <p:column headerText="Acciones">
                             <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
-                                             update="dialogs:manage-product-content2"
+                                             update=":form:dialogs:manage-product-content2"
                                              process="@this"
                                              style="background-color: red; color: white;"
                                              oncomplete="PF('deleteProductDialog').show()">
@@ -94,18 +92,20 @@
                         </p:column>         
                     </p:dataTable>
                 </p:outputPanel>
-
                 <f:facet name="footer">
-                    <p:commandButton value="Comprar" icon="pi pi-check" actionListener="#{productoController.saveProducto()}"
-                                     update="form manage-product-content2 messagesDialogs2" process="manage-product-content2 @this" />
-                    <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageProductDialog2').hide()"
+                    <p:commandButton value="Comprar" icon="pi pi-check" 
+                                     oncomplete="PF('facturaDialog').show(); PF('manageProductDialog2').hide();" 
+                                     update=":form" />
+
+                    <p:commandButton value="Salir" icon="pi pi-times" 
+                                     onclick="PF('manageProductDialog2').hide()" 
                                      class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
             <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
                              message="Desea eliminar este producto del carrito?" header="Confirmar" severity="warn">
                 <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{productoController.deleteProductoCarrito()}"
-                                 process="@this" update="form manage-product-content2 messagesDialogs2"
+                                 process="@this" update=":form:dialogs:manage-product-content2 :form:messagesDialogs2"
                                  oncomplete="PF('deleteProductDialog').hide()" />
                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                  onclick="PF('deleteProductDialog').hide()" />
@@ -128,12 +128,51 @@
                 <f:facet name="footer">
                     <p:commandButton value="Agregar al Carrito" icon="pi pi-check"
                                      actionListener="#{productoController.agregarCarrito()}"
-                                     update="form dialogs:manage-product-content2 messagesDialogs2"
+                                     update=":form:dialogs:manage-product-content2 :form:messagesDialogs2"
                                      process="add-product-content @this"
                                      oncomplete="PF('addProductDialog').hide()" />
                     <p:commandButton value="Cancelar" icon="pi pi-times"
                                      onclick="PF('addProductDialog').hide()" class="ui-button-secondary" type="button" />
                 </f:facet>
+            </p:dialog>
+
+            <p:dialog header="Factura" showEffect="fade" modal="true" widgetVar="facturaDialog" responsive="true">
+                <h:form id="facturaForm">
+                    <h:outputLabel for="nombreComprador">Nombre del Comprador:</h:outputLabel>
+                    <h:inputText id="nombreComprador" required="true" />
+
+                    <h:outputLabel for="correo">Correo:</h:outputLabel>
+                    <h:inputText id="correo" required="true" />
+
+                    <h:outputLabel for="direccion">Dirección:</h:outputLabel>
+                    <h:inputText id="direccion" required="true" />
+
+                    <h:outputLabel for="formaPago">Forma de Pago:</h:outputLabel>
+                    <p:selectOneMenu id="formaPago" >
+                        <f:selectItem itemLabel="Efectivo" itemValue="Efectivo" />
+                    </p:selectOneMenu>
+
+                    <p:dataTable var="miProducto" value="#{productoController.listaCarrito}" >
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{miProducto.nombreProducto}" />
+                        </p:column>
+                        <p:column headerText="Precio">
+                            <h:outputText value="#{miProducto.precio}" />
+                        </p:column>
+                        <p:column headerText="Cantidad en Carrito">
+                            <h:outputText value="#{miProducto.cantidadEnCarrito}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <h:outputText value="Subtotal: #{productoController.calcularSubtotalCarrito()}" />
+
+                    <p:commandButton value="Proceder Compra" icon="pi pi-check" 
+                                     update=":form:dialogs:manage-product-content2 :form:messagesDialogs2" 
+                                     process="facturaForm @this" 
+                                     oncomplete="PF('facturaDialog').hide()" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times"
+                                     onclick="PF('facturaDialog').hide()" class="ui-button-secondary" type="button" />
+                </h:form>
             </p:dialog>
         </h:form>
 

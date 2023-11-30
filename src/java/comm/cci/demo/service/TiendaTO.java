@@ -5,12 +5,14 @@
  */
 package comm.cci.demo.service;
 
+import java.io.Serializable;
+
 /**
  *
  * @author jguzm
  */
-public class TiendaTO {
-    
+public class TiendaTO implements Serializable {
+
     private int idTienda;
     private String nomTienda;
     private String descripcionTienda;
@@ -85,7 +87,5 @@ public class TiendaTO {
     public String toString() {
         return "TiendaTO{" + "idTienda=" + idTienda + ", nomTienda=" + nomTienda + ", descripcionTienda=" + descripcionTienda + ", categoriaTienda=" + categoriaTienda + ", fk_idUser=" + fk_idUser + '}';
     }
-    
-    
-    
+
 }

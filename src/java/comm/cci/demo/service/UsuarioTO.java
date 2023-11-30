@@ -12,8 +12,9 @@ import java.io.Serializable;
  * @author Barri
  */
 public class UsuarioTO implements Serializable {
+
     //atributos
-     private String usuario;
+    private String usuario;
     private String clave;
     private String tipo;
 
@@ -51,7 +52,5 @@ public class UsuarioTO implements Serializable {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-    
-    
-    
+
 }
