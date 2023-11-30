@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,6 +7,7 @@ package comm.cci.demo.controller;
 
 import comm.cci.demo.service.ProductoServicio;
 import comm.cci.demo.service.ProductoTO;
+import comm.cci.demo.service.TiendaTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,8 @@ public class ProductoController implements Serializable {
     private ProductoTO selectedProducto;
     private int idTienda;
     private int cantidadAgregar;
+    List<TiendaTO> listaTiendas = new ArrayList<TiendaTO>();
+    private TiendaTO selectedTienda;
 
     public ProductoController() throws ClassNotFoundException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -58,18 +60,14 @@ public class ProductoController implements Serializable {
         this.selectedProducto = new ProductoTO();
     }
 
-    public void saveProducto() {
-        try {
-            ProductoServicio productoServicio = new ProductoServicio();
-            //Al guardar un producto se referencia en idTienda
-            this.selectedProducto.setIdTienda(idTienda);
-            productoServicio.insertar(this.selectedProducto);
-            this.listaRetorno1 = productoServicio.demeProducto(idTienda);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Acción realizado correctamente"));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace(); // Manejo de la excepción
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error al guardar el producto."));
-        }
+    public void saveProducto() throws ClassNotFoundException {
+
+        ProductoServicio productoServicio = new ProductoServicio();
+        //Al guardar un producto se referencia en idTienda
+        this.selectedProducto.setIdTienda(idTienda);
+        productoServicio.insertar(this.selectedProducto);
+        this.listaRetorno1 = productoServicio.demeProducto(idTienda);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Acción realizado correctamente"));
     }
 
     public void deleteProducto() throws ClassNotFoundException {
@@ -148,7 +146,8 @@ public class ProductoController implements Serializable {
         return subtotalCarrito;
     }
 
-    public List<ProductoTO> getListaRetorno1() {
+    public List<ProductoTO> getListaRetorno1() throws ClassNotFoundException {
+        
         return listaRetorno1;
     }
 
@@ -187,5 +186,23 @@ public class ProductoController implements Serializable {
     public void setCantidadAgregar(int cantidadAgregar) {
         this.cantidadAgregar = cantidadAgregar;
     }
+
+    public List<TiendaTO> getListaTiendas() {
+        return listaTiendas;
+    }
+
+    public void setListaTiendas(List<TiendaTO> listaTiendas) {
+        this.listaTiendas = listaTiendas;
+    }
+
+    public TiendaTO getSelectedTienda() {
+        return selectedTienda;
+    }
+
+    public void setSelectedTienda(TiendaTO selectedTienda) {
+        this.selectedTienda = selectedTienda;
+    }
+    
+    
 
 }

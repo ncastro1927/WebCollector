@@ -26,8 +26,8 @@
                 </p:toolbarGroup>
             </p:toolbar>
             <p:growl id="messages" showDetail="true" />
-            <div class="card" style="display: flex; align-items: center; justify-content: center; background: #2A5A74; height: 50px;">
-                <h1 style="color: #FFFF;">Tiendas</h1>
+            <div class="card" style="display: flex; align-items: center; justify-content: center; background: #2A5A74; height: 50px;  font-family: 'Times New Roman'">
+                <h1 style="color: #FFFF; font-size: 24px;">Tiendas</h1>
             </div>
             <p:commandButton value="Crear Tienda" icon="pi pi-plus" actionListener="#{tiendaController.openNew()}"
                              update=":dialogs:crear-tienda-content" oncomplete="PF('crearTiendaDialog').show()"
@@ -36,48 +36,61 @@
             </p:commandButton>
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fx)); gap: 10px;">
                 <ui:repeat value="#{tiendaController.listaTiendas}" var="tienda">
-                    <p:card style=" background-color: #ededed; height: auto; margin-top: 10px; text-align: center">
-                        <f:facet name="header" >
-                            <img style="margin-top: 20px; height: 100px; width: auto;" alt="imagen" src="https://cdn-icons-png.flaticon.com/512/2697/2697432.png"/>
+                    <p:card style="background-color: #ededed; height: auto; margin-top: 10px; text-align: center; position: relative;">
+                        <f:facet name="header">
+                            <img style="margin-top: 20px; height: 100px; width: auto;" alt="imagen"
+                                 src="https://cdn-icons-png.flaticon.com/512/2697/2697432.png"/>
                         </f:facet>
+                        <div style="position: absolute; top: 10px; right: 10px; z-index: 1; display: flex; align-items: center;">
+                            <p:commandButton icon="pi pi-pencil"
+                                             update=":dialogs:crear-tienda-content"
+                                             oncomplete="PF('crearTiendaDialog').show()"
+                                             style="background-color: darkseagreen; color: white;"
+                                             styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                <f:setPropertyActionListener value="#{tienda}" target="#{tiendaController.selectedTienda}" />
+                                <p:resetInput target=":dialogs:crear-tienda-content" />
+                            </p:commandButton>
+                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                             process="@this"
+                                             style="background-color: red; color: white; margin-left: 10px;"
+                                             oncomplete="PF('deleteTiendaDialog').show()">
+                                <f:setPropertyActionListener value="#{tienda}" target="#{tiendaController.selectedTienda}" />
+                            </p:commandButton>
+                        </div>
                         <f:facet name="title">
                             #{tienda.nomTienda}
                         </f:facet>
-                        <p:outputLabel value="Descripción: #{tienda.descripcionTienda}"/>                        
-                        <div>
-                            <i class="pi pi-tag product-category-icon" style="margin-top: 20px; width: auto;"/>
-                            <span class="product-category">#{tienda.categoriaTienda} </span>
+
+                        <p:outputLabel value="Descripción: #{tienda.descripcionTienda}" style="margin-top: 20px; height: 100px; width: auto;"/>
+                        <div style="display: flex; align-items: center; justify-content: center; margin-top: 10px;">
+                            <i class="pi pi-tag product-category-icon" style="margin-right: 10px;"/>
+                            <span class="product-category">#{tienda.categoriaTienda}</span>
                         </div>
                         <f:facet name="footer">
                             <p:commandButton value="Acceder" actionListener="#{tiendaController.ingresarProductosAdmin(tienda.idTienda)}"
                                              process="@this" style="width: 70%; background-color: #28A0BA;"/>
                         </f:facet>
                     </p:card>
-                    <p:column headerText="Acciones">
-                        <p:commandButton icon="pi pi-pencil" update=":dialogs:crear-tienda-content"
-                                         oncomplete="PF('crearTiendaDialog').show()"
-                                         style="background-color: darkseagreen; color: white;"
-                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
-                            <f:setPropertyActionListener value="#{tienda}" target="#{tiendaController.selectedTienda}" />
-                            <p:resetInput target=":dialogs:crear-tienda-content" />
-                        </p:commandButton>
-                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
-                                         process="@this"
-                                         style="background-color: red; color: white;"
-                                         oncomplete="PF('deleteTiendaDialog').show()">
-                            <f:setPropertyActionListener value="#{tienda}" target="#{tiendaController.selectedTienda}" />
-                        </p:commandButton>
-                    </p:column>
+
+                   
                 </ui:repeat>
             </div>
+
+
+
+
             <p:confirmDialog widgetVar="deleteTiendaDialog" showEffect="fade" width="300"
                              message="Desea eliminar esta tienda?" header="Confirmar" severity="warn">
-                <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{tiendaController.deleteTienda()}"
+                <p:commandButton value="Si" icon="pi pi-check" actionListener="#{tiendaController.deleteTienda()}"
                                  process="@this" update="form dialogs:crear-tienda-content"
                                  oncomplete="PF('deleteTiendaDialog').hide()" />
                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                  onclick="PF('deleteTiendaDialog').hide()" />
             </p:confirmDialog>
+
+
+
+
         </h:form>
 
         <h:form id="dialogs">
@@ -90,13 +103,16 @@
                         <p:inputText id="nom" value="#{tiendaController.selectedTienda.nomTienda}" required="true" requiredMessage="Debe insertar el Nombre de la Tienda" />
                     </div>
                     <div class="field">
-                        <p:outputLabel for="catg">Categoria</p:outputLabel>
-                        <p:inputText id="catg" value="#{tiendaController.selectedTienda.categoriaTienda}" required="true" requiredMessage="Debe insertar la Categoria de la Tienda"/>
-                    </div>
-                    <div class="field">
                         <p:outputLabel for="descripcion">Descripcion</p:outputLabel>
-                        <p:inputText id="descripcion" value="#{tiendaController.selectedTienda.descripcionTienda}" required="true" requiredMessage="Debe insertar la Descripcion de la Tienda"/>
-                    </div>
+                        <p:inputText id="descripcion" value="#{tiendaController.selectedTienda.categoriaTienda}" required="true" requiredMessage="Debe insertar la Descripcion de la Tienda"/>
+                    </div>
+                    
+
+                   <div class="field">
+                        <p:outputLabel for="catg">Categoria</p:outputLabel>
+                        <p:inputText id="catg" value="#{tiendaController.selectedTienda.descripcionTienda}" required="true" requiredMessage="Debe insertar la Categoria de la Tienda"/>
+                    </div>
+
                 </p:outputPanel>
                 <f:facet name="footer">
                     <p:commandButton value="Agregar" icon="pi pi-check" actionListener="#{tiendaController.saveTienda()}"

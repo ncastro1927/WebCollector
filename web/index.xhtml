@@ -8,56 +8,58 @@
         <title>Login</title>
         <h:outputStylesheet library="css" name="login.css"/>
     </h:head>
-    
-    <h:body  id="centrar">
-            <h:form id="dialogs">
+
+    <h:body style="margin: 0; padding: 0; height: 100%; background-color: #ffffff; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <div style="background-color: #2A5A74; padding: 15px; border-radius: 0px; text-align: center; margin-bottom: 0px; width: 50%; margin-top: 20px; font-family: 'Times New Roman'">
+            <h:outputText value="Bienvenido a WebCollector" style="font-size: 24px; color: #ffffff;" />
+        </div>
+
+        <h:form id="dialogs">
             <p:growl id="messagesDialogs" showDetail="false" />
             <p:dialog header="Detalles del cliente" showEffect="fade" modal="true" widgetVar="manageProductDialog"
                       responsive="true">  
 
                 <p:outputPanel id="manage-product-content" class="ui-fluid">
-                   
-                        <div class="field">
-                            <p:outputLabel for="usuario">Usuario </p:outputLabel>
-                            <p:inputText id="usuario"  required="true" value="#{registroController.selectedUsuario.usuario}"/>
-                        </div>
-                    
-                        <div class="field">
-                            <p:outputLabel for="clave">Clave </p:outputLabel>
-                            <p:inputText id="clave"  required="true" value="#{registroController.selectedUsuario.clave}"/>
-                        </div>
-                        
-                 
+
+                    <div class="field">
+                        <p:outputLabel for="usuario">Usuario </p:outputLabel>
+                        <p:inputText id="usuario"  required="true" value="#{registroController.selectedUsuario.usuario}"/>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="clave">Clave </p:outputLabel>
+                        <p:inputText id="clave"  required="true" value="#{registroController.selectedUsuario.clave}"/>
+                    </div>
+
+
                 </p:outputPanel>
-            
-            <f:facet name="footer">
-                <p:commandButton value="Registrar" icon="pi pi-check" actionListener="#{registroController.registrar()}"
-                    update="manage-product-content form" process="manage-product-content @this"/>
-                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
-                    class="ui-button-secondary" type="button" />
-            </f:facet>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Registrar" icon="pi pi-check" actionListener="#{registroController.registrar()}"
+                                     update="manage-product-content form" process="manage-product-content @this"/>
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                     class="ui-button-secondary" type="button" />
+                </f:facet>
             </p:dialog>
-            
-        </h:form>
-        
-        
-        <h:form id="form">
-            <p:panelGrid columns="1" >
-            <h1 style="text-align: center">Ingrese</h1> 
-            <p:growl id="msg" showDetail="true"/>
-             
-            <p:inputText value="#{loginController.usuario}" placeholder="Correo Electronico"/>
-            <p:password value="#{loginController.clave}" placeholder="Clave"/>
-            
-            <p:commandButton value="Ingresar al sistema" actionListener="#{loginController.ingresar()}" update="msg"/>
-            <p:commandButton value="Registrarse" icon="pi pi-plus" 
-                                     update=":dialogs:manage-product-content"
-                                     oncomplete="PF('manageProductDialog').show()"
-                                     styleClass="ui-button-success" style="margin-right: .5rem"
-                                     actionListener="#{registroController.openNew}" />
-        </p:panelGrid>
 
         </h:form>
+
+
+        <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background-color: #ffffff;">
+
+            <h:form id="form" style="width: 300px; text-align: center; padding: 28px; background-color: #ededed; border-radius: 8px; margin-top: 0px;">
+                <p:panelGrid columns="1">
+                    <h1>Inicio sesión</h1>
+                    <p:growl id="msg" showDetail="true" />
+                    <p:inputText value="#{loginController.usuario}" placeholder="Correo Electronico" />
+                    <p:password value="#{loginController.clave}" placeholder="Clave" />
+                    <p:commandButton value="Ingresar al sistema" actionListener="#{loginController.ingresar()}" update="msg" />
+                    <p:commandButton value="Registrarse" icon="pi pi-plus" update=":dialogs:manage-product-content"
+                                     oncomplete="PF('manageProductDialog').show()" styleClass="ui-button-success" style="margin-top: 10px;"
+                                     actionListener="#{registroController.openNew}" />
+                </p:panelGrid>
+            </h:form>
+        </div>
 
     </h:body>
 </html>

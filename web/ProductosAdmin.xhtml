@@ -18,11 +18,23 @@
                              styleClass="ui-button-success" style="margin-right: .5rem" rendered="True">
                 <p:resetInput target=":dialogs:manage-product-content" />
             </p:commandButton>
-            <p:dataTable var="miProducto" value="#{productoController.listaRetorno1}"  rows="10"
-                         paginator="true" paginatorPosition="both"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+
+
+
+            <p:dataTable var="miProducto" value="#{productoController.listaRetorno1}"
+                         rowKey="#{product.id}" paginator="true" rows="5" rowSelectMode="add" paginatorPosition="bottom">
+
+
+                <f:facet name="header">
+                    <div class="products-table-header" style="display: flex; justify-content: space-between; align-items: center;  ">
+                        <span style="font-weight: bold"></span>
+                        <span class="filter-container ui-input-icon-left" style="margin-left: auto;"> <!-- Ajusta la alineación -->
+                            <i class="pi pi-search"></i>
+                            <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Buscar producto" />
+                        </span>
+                    </div>
+                </f:facet>
+
                 <p:column headerText="Codigo">
                     <h:outputText value="#{miProducto.codigo}" />
                 </p:column>
@@ -67,14 +79,14 @@
                 <f:facet name="paginatorTopLeft">
                 </f:facet>
 
-                <f:facet name="paginatorBottomRight">
-                </f:facet>
+
 
             </p:dataTable>
         </h:form>
 
         <h:form id="dialogs">
             <p:growl id="messagesDialogs" showDetail="True" />
+
             <p:dialog header="Nuevo producto" showEffect="fade" modal="true" widgetVar="manageProductDialog"
                       responsive="true">
                 <p:outputPanel id="manage-product-content" class="ui-fluid">
@@ -92,18 +104,25 @@
                     </div>
                     <div class="field">
                         <p:outputLabel for="categoria">Categoria</p:outputLabel>
-                        <p:selectOneRadio id="categoria" value="#{productoController.selectedProducto.categoriaProducto}"
-                                          layout="responsive" columns="2">
-                            <f:selectItem itemLabel="Damas" itemValue="Damas" />
-                            <f:selectItem itemLabel="Caballeros" itemValue="Caballeros" />
-                            <f:selectItem itemLabel="Niños" itemValue="Niños" />
-                            <f:selectItem itemLabel="Bebes" itemValue="Bebes" />
-                        </p:selectOneRadio>
+                        <p:selectOneMenu id="categoria" value="#{productoController.selectedProducto.categoriaProducto}">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />                       
+                            <f:selectItem itemLabel="Ropa" itemValue="Ropa" />
+                            <f:selectItem itemLabel="Zapatos" itemValue="Zapatos" />
+                            <f:selectItem itemLabel="Tecnología" itemValue="Tecnología" />
+                            <f:selectItem itemLabel="Electrodomesticos" itemValue="Electrodomesticos" />
+                            <f:selectItem itemLabel="Maquillaje" itemValue="Maquillaje" />
+                            <f:selectItem itemLabel="Muebles" itemValue="Muebles" />
+                            <f:selectItem itemLabel="Medicametos" itemValue="Medicamentos" />
+                            <f:selectItem itemLabel="Libros" itemValue="Libros" />
+                        </p:selectOneMenu>
                     </div>
+
                     <div class="field col">
-                        <p:outputLabel for="precio">Precio</p:outputLabel>
-                        <p:inputNumber id="precio" value="#{productoController.selectedProducto.precio}" symbol=" COL"
-                                       symbolPosition="s" decimalSeparator="." thousandSeparator="," />
+                        <p:outputLabel for="precio" value="Precio" />
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="₡" styleClass="currency-symbol" />
+                            <p:inputNumber id="precio" value="#{productoController.selectedProducto.precio}" decimalSeparator="." thousandSeparator="," />
+                        </p:panelGrid>
                     </div>
                     <div class="field col">
                         <p:outputLabel for="cantidadDisponible">Cantidad disponible</p:outputLabel>

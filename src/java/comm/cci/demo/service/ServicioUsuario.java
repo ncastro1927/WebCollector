@@ -14,12 +14,12 @@ import java.util.ArrayList;
  *
  * @author Barri
  */
-public class ServicioUsuario extends Servicio {
-
+public class ServicioUsuario extends Servicio{
+    
     //valida si el usuario ya existe 
-    public UsuarioTO validarUsuario(String usuario, String clave) throws ClassNotFoundException {
-        UsuarioTO usuarioTO = null;
-
+     public UsuarioTO validarUsuario(String usuario, String clave) throws ClassNotFoundException {
+        UsuarioTO usuarioTO=null;
+        
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("SELECT * FROM users WHERE usuario=? AND clave=?");
             stmt.setString(1, usuario);
@@ -30,9 +30,9 @@ public class ServicioUsuario extends Servicio {
                 String user = rs.getString("usuario");
                 String contra = rs.getString("clave");
                 String tipo = rs.getString("tipo");
-
-                usuarioTO = new UsuarioTO(user, contra, tipo);
-
+                
+                 usuarioTO = new UsuarioTO(user,contra, tipo);
+                
             }
             rs.close();
             stmt.close();
@@ -43,21 +43,23 @@ public class ServicioUsuario extends Servicio {
 
         return usuarioTO;
     }
-
-    //retorna los usuarios de la base de datos
-    public ArrayList<UsuarioTO> retornarUsuario() throws ClassNotFoundException {
-        ArrayList<UsuarioTO> listaRetorno = new ArrayList<UsuarioTO>();
+    
+     //retorna los usuarios de la base de datos
+     public ArrayList<UsuarioTO>  retornarUsuario() throws ClassNotFoundException{
+         ArrayList<UsuarioTO> listaRetorno = new ArrayList<UsuarioTO>();
+         
+        
 
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("SELECT usuario,clave,tipo FROM users ");
-
+            
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String user = rs.getString("usuario");
                 String clave = rs.getString("clave");
                 String tipo = rs.getString("tipo");
-
+                
                 UsuarioTO usuarioTO = new UsuarioTO(user, clave, tipo);
                 listaRetorno.add(usuarioTO);
             }
@@ -67,11 +69,12 @@ public class ServicioUsuario extends Servicio {
         } catch (SQLException ex) {
             System.out.println("Error al abrir Conexión: " + ex.getMessage());
         }
-
+      
         return listaRetorno;
     }
-
-    //inserta usuarios
+    
+    
+     //inserta usuarios
     public void insertar(UsuarioTO usuarioTO) throws ClassNotFoundException {
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO users(usuario, clave,tipo) VALUES (?,?,?)");
@@ -87,9 +90,9 @@ public class ServicioUsuario extends Servicio {
         }
 
     }
-
+    
     //modifica usuarios
-    public void modificar(UsuarioTO usuarioTO) throws ClassNotFoundException {
+     public void modificar(UsuarioTO usuarioTO) throws ClassNotFoundException {
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE users SET tipo = ?, usuario = ?, clave = ? WHERE usuario=?");
             stmt.setString(1, usuarioTO.getTipo());
@@ -104,9 +107,9 @@ public class ServicioUsuario extends Servicio {
         }
 
     }
-
-    //elimina usuarios
-    public void eliminar(UsuarioTO usuarioTO) throws ClassNotFoundException {
+     
+     //elimina usuarios
+     public void eliminar(UsuarioTO usuarioTO) throws ClassNotFoundException {
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM users WHERE usuario=?");
             stmt.setString(1, usuarioTO.getUsuario());
@@ -118,5 +121,6 @@ public class ServicioUsuario extends Servicio {
         }
 
     }
-
+    
+    
 }

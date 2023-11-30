@@ -5,6 +5,8 @@
  */
 package comm.cci.demo.controller;
 
+import comm.cci.demo.service.ProductoServicio;
+import comm.cci.demo.service.ProductoTO;
 import comm.cci.demo.service.ServicioTienda;
 import comm.cci.demo.service.ServicioUsuario;
 import comm.cci.demo.service.TiendaTO;
@@ -35,6 +37,8 @@ public class TiendaController implements Serializable {
     private String categoriaTienda;
     List<TiendaTO> listaTiendas = new ArrayList<TiendaTO>();
     private TiendaTO selectedTienda;
+    private List<ProductoTO> listaRetorno1 = new ArrayList<ProductoTO>();
+    private ProductoTO selectedProducto;
 
     //Constructor de la clase el cual se encarga de llenar la listaTiendas para evitar un nullPointerexception
     public TiendaController() throws ClassNotFoundException {
@@ -86,10 +90,29 @@ public class TiendaController implements Serializable {
 
     public void deleteTienda() throws ClassNotFoundException {
         ServicioTienda servicioTienda = new ServicioTienda();
-        servicioTienda.eliminar(this.selectedTienda);
-        listaTiendas.remove(selectedTienda);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Tienda Eliminado"));
+        this.listaTiendas = servicioTienda.demeTiendas();
+        ProductoServicio productoServicio = new ProductoServicio();
+        this.listaRetorno1 = productoServicio.demeProducto(0);
 
+        boolean valActRel = false;
+
+        for (ProductoTO LR : listaRetorno1) {
+
+            if (this.selectedTienda.getIdTienda() == (LR.getIdTienda())) {
+                valActRel = true;
+                break; // Salir del bucle una vez que se encuentre una coincidencia válida
+            }
+        }
+
+        if (valActRel) {
+            servicioTienda.eliminar(this.selectedTienda);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Tienda no se Elimino", "Esta tienda tiene productos"));
+        } else {
+            servicioTienda.eliminar(this.selectedTienda);
+            this.listaTiendas = servicioTienda.demeTiendas();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Si la eliminación no fue concretada, se debe a que tiene poductos asocados", "En caso de que la eliminación haya sido concretada con exito, no hubo nigun problema"));
+
+        }
     }
 
     public String getNomTienda() {
@@ -130,6 +153,22 @@ public class TiendaController implements Serializable {
 
     public void setSelectedTienda(TiendaTO selectedTienda) {
         this.selectedTienda = selectedTienda;
+    }
+
+    public List<ProductoTO> getListaRetorno1() {
+        return listaRetorno1;
+    }
+
+    public void setListaRetorno1(List<ProductoTO> listaRetorno1) {
+        this.listaRetorno1 = listaRetorno1;
+    }
+
+    public ProductoTO getSelectedProducto() {
+        return selectedProducto;
+    }
+
+    public void setSelectedProducto(ProductoTO selectedProducto) {
+        this.selectedProducto = selectedProducto;
     }
 
     @Override
