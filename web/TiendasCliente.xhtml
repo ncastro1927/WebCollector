@@ -15,7 +15,7 @@
             <p:growl id="messages" showDetail="true" />
             <p:toolbar>
                 <p:toolbarGroup>
-                    <p:commandButton value="Ver mi perfil" icon="pi pi-user" styleClass="ui-button-help">
+                     <p:commandButton value="Ver mi perfil" icon="pi pi-user" styleClass="ui-button-help" ajax="false" actionListener="#{perfilController.ingresar()}">
                     </p:commandButton>
                 </p:toolbarGroup>
             </p:toolbar>

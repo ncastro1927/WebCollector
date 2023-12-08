@@ -94,13 +94,14 @@
                         </p:column>         
                     </p:dataTable>
                 </p:outputPanel>
-
                 <f:facet name="footer">
-                    <p:commandButton value="Comprar" icon="pi pi-check" actionListener="#{productoController.saveProducto()}"
+                    <p:commandButton value="Comprar" icon="pi pi-check" actionListener="#{productoController.pagina()}"
                                      update="form manage-product-content2 messagesDialogs2" process="manage-product-content2 @this" />
                     <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageProductDialog2').hide()"
                                      class="ui-button-secondary" type="button" />
                 </f:facet>
+
+
             </p:dialog>
             <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
                              message="Desea eliminar este producto del carrito?" header="Confirmar" severity="warn">
@@ -135,6 +136,7 @@
                                      onclick="PF('addProductDialog').hide()" class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
+
         </h:form>
 
     </h:body>

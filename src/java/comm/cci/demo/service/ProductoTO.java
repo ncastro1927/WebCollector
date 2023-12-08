@@ -31,6 +31,19 @@ public class ProductoTO implements Serializable {
     public ProductoTO() {
     }
 
+    public ProductoTO(int id, String codigo, String nombreProducto, String descripcionProducto, String imagen, double precio, String categoriaProducto, int cantidadDisponible, int idTienda, int cantidadEnCarrito) {
+        this.id = id;
+        this.codigo = codigo;
+        this.nombreProducto = nombreProducto;
+        this.descripcionProducto = descripcionProducto;
+        this.imagen = imagen;
+        this.precio = precio;
+        this.categoriaProducto = categoriaProducto;
+        this.cantidadDisponible = cantidadDisponible;
+        this.idTienda = idTienda;
+        this.cantidadEnCarrito = cantidadEnCarrito;
+    }
+
     public ProductoTO(int id, String codigo, String nombreProducto, String descripcionProducto, String imagen, double precio, String categoriaProducto, int cantidadDisponible, int idTienda) {
         this.id = id;
         this.codigo = codigo;
@@ -42,6 +55,8 @@ public class ProductoTO implements Serializable {
         this.cantidadDisponible = cantidadDisponible;
         this.idTienda = idTienda;
     }
+
+  
 
     public int getId() {
         return id;
@@ -125,7 +140,9 @@ public class ProductoTO implements Serializable {
 
     @Override
     public String toString() {
-        return "ProductoTO{" + "id=" + id + ", codigo=" + codigo + ", nombreProducto=" + nombreProducto + ", descripcionProducto=" + descripcionProducto + ", imagen=" + imagen + ", precio=" + precio + ", categoriaProducto=" + categoriaProducto + ", cantidadDisponible=" + cantidadDisponible + ", idTienda=" + idTienda + '}';
+        return "Producto:"+nombreProducto+", Precio:"+precio+", Cantidad:"+cantidadEnCarrito;
     }
+
+
 
 }

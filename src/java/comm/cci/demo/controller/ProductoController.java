@@ -8,25 +8,30 @@ package comm.cci.demo.controller;
 import comm.cci.demo.service.ProductoServicio;
 import comm.cci.demo.service.ProductoTO;
 import comm.cci.demo.service.TiendaTO;
+import comm.cci.demo.service.UsuarioTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import org.primefaces.PrimeFaces;
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  *
  * @author natal
  */
 @ManagedBean(name = "productoController")
-@ViewScoped
+@SessionScoped
 public class ProductoController implements Serializable {
-
+    @ManagedProperty("#{loginController}")
+    private LoginController loginController;
+    
     private List<ProductoTO> listaRetorno1 = new ArrayList<ProductoTO>();
     private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
@@ -34,6 +39,9 @@ public class ProductoController implements Serializable {
     private int cantidadAgregar;
     List<TiendaTO> listaTiendas = new ArrayList<TiendaTO>();
     private TiendaTO selectedTienda;
+    private int cantidadTotal;
+    private double subtotalCarrito;
+    private String user;
 
     public ProductoController() throws ClassNotFoundException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -131,7 +139,7 @@ public class ProductoController implements Serializable {
     }
 
     public int calcularCantidadTotalCarrito() {
-        int cantidadTotal = 0;
+        cantidadTotal = 0;
         for (ProductoTO producto : listaCarrito) {
             cantidadTotal += producto.getCantidadEnCarrito();
         }
@@ -139,12 +147,33 @@ public class ProductoController implements Serializable {
     }
 
     public double calcularSubtotalCarrito() {
-        double subtotalCarrito = 0.0;
+        subtotalCarrito = 0.0;
         for (ProductoTO producto : listaCarrito) {
             subtotalCarrito += producto.getSubtotal();
         }
         return subtotalCarrito;
     }
+    
+    public String obtenerUser(){
+             this.user = loginController.getUsuario();
+             return user;
+    }
+        
+    public void pagina() throws ClassNotFoundException{ 
+        this.redireccionar("/faces/Factura.xhtml");
+
+    }
+        //redirecciona
+    public void redireccionar(String ruta){
+        HttpServletRequest request;
+        try{
+            request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + ruta);
+        }catch(Exception e){
+        
+        }
+    }
+    
 
     public List<ProductoTO> getListaRetorno1() throws ClassNotFoundException {
         
@@ -202,7 +231,40 @@ public class ProductoController implements Serializable {
     public void setSelectedTienda(TiendaTO selectedTienda) {
         this.selectedTienda = selectedTienda;
     }
-    
+
+    public int getCantidadTotal() {
+        return cantidadTotal;
+    }
+
+    public void setCantidadTotal(int cantidadTotal) {
+        this.cantidadTotal = cantidadTotal;
+    }
+
+    public double getSubtotalCarrito() {
+        return subtotalCarrito;
+    }
+
+    public void setSubtotalCarrito(double subtotalCarrito) {
+        this.subtotalCarrito = subtotalCarrito;
+    }
+
+    public LoginController getLoginController() {
+        return loginController;
+    }
+
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+ 
     
 
 }
